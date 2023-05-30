@@ -1,4 +1,4 @@
-package week1;
+package hust.soict.globalict.lab01;
 
 public class HelloWorld {
 public static void main (String args[]) {

@@ -1,4 +1,4 @@
-package week1;
+package hust.soict.globalict.lab01;
 import java.util.Scanner;
 
 public class LinearEquationTwoVariables {

@@ -1,4 +1,4 @@
-package week1;
+package hust.soict.globalict.lab01;
 import java.util.Scanner;
 public class InputFrommKeyBoard {
 public static void main (String arg[]) {
@@ -13,4 +13,3 @@ System.out.println("Mrs/Ms " + strName +", "+ iAge +" years old." + " Your heigh
 
 }
 }
-
