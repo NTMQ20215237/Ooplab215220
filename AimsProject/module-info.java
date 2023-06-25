@@ -11,5 +11,5 @@ module AimsProject {
 	requires javafx.fxml;
 	requires javafx.graphics;
 	requires javafx.swing;
-	opens application;
+	opens hust.soict.globalict.aims;
 }
