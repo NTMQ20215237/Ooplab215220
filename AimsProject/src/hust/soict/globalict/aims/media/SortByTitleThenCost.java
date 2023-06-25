@@ -1,22 +1,12 @@
 package hust.soict.globalict.aims.media;
+
 import java.util.Comparator;
 
 public class SortByTitleThenCost implements Comparator<Media> {
-    public SortByTitleThenCost() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public int compareTitle(String s1, String s2) {
-		if(s1.compareTo(s2) > 0)
-			return 1;
-		else 
-			return -1;
-		
-	}
-	public int compare(Media m1, Media m2) {
-		if(compareTitle(m1.title, m2.title) == 1) 
-			return 1;
-		else 
-			return -1;
+	public int compare(Media o1, Media o2) {
+        if(o1.getTitle().equals(o2.getTitle()))
+            return o1.getCost() > o2.getCost() ? 1 : 0;
+        else    
+            return o1.getTitle().compareTo(o2.getTitle());
 	}
 }

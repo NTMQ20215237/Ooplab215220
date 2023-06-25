@@ -1,23 +1,12 @@
 package hust.soict.globalict.aims.disc;
 import hust.soict.globalict.aims.media.Disc;
 import hust.soict.globalict.aims.media.Playable;
-public class DigitalVideoDisc extends Disc implements Playable {
-    // Add specific fields and methods for DigitalVideoDisc class
+import javax.swing.JOptionPane;
 
-    public DigitalVideoDisc(int id, String title, String category, float cost) {
-        super();
-    }
-private String director;
-private int length;
-private static int nbDigitalVideoDisc = 0;
-public static int getNbDigitalVideoDisc()
-{
-return nbDigitalVideoDisc;
-}
-public static void setNbDigitalVideoDisc(int nbDigitalVideoDisc)
-{
-	DigitalVideoDisc.nbDigitalVideoDisc = nbDigitalVideoDisc;
-}
+public class DigitalVideoDisc extends Disc implements Playable {
+    
+    private static int nbDigitalVideoDisc = 0;
+
     //Getters
     public static int getNbDVD() {
         return nbDigitalVideoDisc;
@@ -83,9 +72,9 @@ public static void setNbDigitalVideoDisc(int nbDigitalVideoDisc)
 
     @Override
     public void play() {
-        System.out.println("Playing DVD: " + this.getTitle());
-        System.out.println("DVD length: " + this.getLength());
+        if(length > 0)
+            JOptionPane.showMessageDialog(null, "Playing DVD...");
+        else
+            JOptionPane.showMessageDialog(null, "DVD's content is empty");
     }
-    
-
 }

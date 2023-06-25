@@ -1,14 +1,11 @@
 package hust.soict.globalict.aims.media;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Book extends Media {
     private static int nbBook = 0;
 
-    private List<String> authors = new ArrayList<String>();
-    
-    //Getters
+    private List<String> authors = new ArrayList<String>(); 
     public int getNbBook() {
         return nbBook;
     }
@@ -16,7 +13,6 @@ public class Book extends Media {
         return authors;
     }
 
-    //Add & Remove authors
     public void addAuthor(String authorName) {
         if(!authors.contains(authorName))
             authors.add(authorName);
@@ -33,6 +29,7 @@ public class Book extends Media {
         }
     }
 
+    //Contructors
     public Book(String title){
         setTitle(title);
         nbBook++;

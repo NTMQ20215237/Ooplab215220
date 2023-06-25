@@ -1,24 +1,33 @@
 package hust.soict.globalict.aims.cart;
 
-import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 import hust.soict.globalict.aims.media.Media;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Cart {
     public static final int MAX_NUMBER_ORDERED = 20;
-    private ArrayList<Media> itemsOrdered = new ArrayList<Media>();
+    private ObservableList<Media> itemsOrdered = FXCollections.observableArrayList();
     private int qtyOrdered = 0;
 
-    //Add DVD and sort by created date
     public void addItem(Media item){
         if(qtyOrdered >= MAX_NUMBER_ORDERED){
-            System.out.println("The cart is almost full");
+            JOptionPane.showMessageDialog(null, "The cart is almost full", "Warning", JOptionPane.INFORMATION_MESSAGE);
         }else if (itemsOrdered.contains(item)) {
-            System.out.println("This item is already exist in cart");
+            JOptionPane.showMessageDialog(null, "Item is already exist in cart", "Warning", JOptionPane.INFORMATION_MESSAGE);
         }else{
             itemsOrdered.add(item);
-            System.out.println("Item is added into cart");
-            
+            JOptionPane.showMessageDialog(null, "Item added to cart", "Notice", JOptionPane.INFORMATION_MESSAGE); 
         }
+    }
+
+    public ObservableList<Media> getItemsOrdered() {
+        return itemsOrdered;
+    }
+
+    public int getQtyOrdered() {
+        return qtyOrdered;
     }
 
     //Add a array of discs into cart
@@ -37,7 +46,7 @@ public class Cart {
             flag = true;
         }
         if (!flag)
-            System.out.println("Not found the disc in cart!\nNo disc was removed");
+            JOptionPane.showMessageDialog(null, "Not found item!", "Notice", JOptionPane.INFORMATION_MESSAGE);
     }
 
     //Return sum of dvd's cost existing in cart
@@ -51,13 +60,11 @@ public class Cart {
     
 
     //Show all item existing in cart
-    public void display() {
+    public void showItemsOrdered() {
         System.out.println("Order Items:");
-
+        
         for (Media item : itemsOrdered){
-            if (item != null) {
-                System.out.println(item.toString());
-            }
+            System.out.println(item.toString());
         }
         System.out.println("Total cost: " + totalCost() + " $");
     }
@@ -88,8 +95,6 @@ public class Cart {
         if (!found)
             System.out.println("No item match!");
     }
-	public ArrayList<Media> currentItem() {
-	    return new ArrayList<Media>(itemsOrdered);
-	}
+
 
 }
