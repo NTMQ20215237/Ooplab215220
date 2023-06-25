@@ -10,5 +10,6 @@ module AimsProject {
 	requires javafx.controls;
 	requires javafx.fxml;
 	requires javafx.graphics;
+	requires javafx.swing;
 	opens application;
 }
