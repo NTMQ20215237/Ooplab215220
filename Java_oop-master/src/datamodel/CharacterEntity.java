@@ -3,7 +3,7 @@ package datamodel;
 import java.util.Map;
 
 import constant.Constant;
-public class CharacterEntity extends baseEntity {
+public class CharacterEntity extends BaseEntity {
     public CharacterEntity() {
         super();
     }

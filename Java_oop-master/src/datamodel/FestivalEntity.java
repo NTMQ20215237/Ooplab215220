@@ -4,7 +4,7 @@ import java.util.Map;
 
 import constant.Constant;
 
-public class FestivalEntity extends baseEntity{
+public class FestivalEntity extends BaseEntity{
 
 	public FestivalEntity() {
 		super();

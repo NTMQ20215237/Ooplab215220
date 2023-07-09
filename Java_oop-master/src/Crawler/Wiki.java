@@ -87,17 +87,21 @@ public class Wiki {
 					}
 				}
 				//	Multiple columns handle
-                String colspan = ele.attr("colspan");
-                if (colspan.length()!=0) {
-                	int k = Integer.parseInt(colspan);
-                    for (int l=0; l<k; l++) {
-                        tableData.get(i).set(j+l,ele);
-                        mark[i][j+l] = true;
-                    }
-                }				
-			}
+				String colspan = ele.attr("colspan");
+				if (colspan.length() != 0) {
+				    int k = Integer.parseInt(colspan);
+				    for (int l = 0; l < k; l++) {
+				        int columnIndex = j + l;
+				        if (columnIndex < tableData.get(i).size()) {
+				            tableData.get(i).set(columnIndex, ele);
+				            mark[i][columnIndex] = true;
+				        } else {
+				            // Xử lý lỗi hoặc thông báo vượt quá kích thước danh sách/mảng
+				        }
+				    }
+				}
 		}
-        
+		} 
         return tableData;
 		
 	}
@@ -216,4 +220,74 @@ public class Wiki {
 		}
 		return additionalInfo;
 	}
-}
+	public static String getDescription(String linkToDetailedPost) {
+		Document doc = getDocument(linkToDetailedPost);
+		if (doc == null)
+			return "Chưa có thông tin chi tiết";
+
+		Element content = doc.selectFirst("#mw-content-text .mw-parser-output");
+		if (content == null)
+			return "Chưa có thông tin chi tiết";
+
+		StringBuilder description = new StringBuilder();
+		Elements children = content.children();
+		HashSet<Element> invalidTags = new HashSet<Element>(); // store the invalid tags
+
+		for (Element child : children) {
+			String type = child.tagName();
+
+			switch (type) {
+			case "figure":
+				// type of figure
+			case "table":
+				// type of table
+				if (child.hasClass("cquote")) // quote character sayings
+					break;
+			case "div":
+				// a div tag
+				invalidTags.add(child);
+			}
+		}
+
+		for (Element child : invalidTags)
+			child.remove(); // remove the invalid tags has found
+
+		children = content.children();
+		int h2_index = 0, h3_index = 1, numChildren = children.size();
+
+		for (int j = 0; j < numChildren; j++) {
+			Element child = children.get(j);
+			String type = child.tagName();
+			String childText = child.text();
+
+			if (childText.equals(""))
+				continue;
+
+			switch (type) {
+			case "h2":
+				if (j == numChildren - 1 || children.get(j + 1).tagName() == "h2")
+					break;
+				h2_index++;
+				description.append(h2_index + ". " + childText + "\n\n");
+				h3_index = 1;
+				break;
+			case "h3":
+				description.append(h2_index + ". " + h3_index + childText + "\n\n");
+				h3_index++;
+				break;
+			case "p":
+				description.append(" " + childText + "\n\n");
+				break;
+			case "ul":
+				if (child.classNames().size() == 0) {
+					for (Element e : child.select("li")) {
+						description.append(" + " + e.text() + "\n\n");
+					}
+				}
+				break;
+			}
+		}
+
+		return description.toString();
+	}
+	}

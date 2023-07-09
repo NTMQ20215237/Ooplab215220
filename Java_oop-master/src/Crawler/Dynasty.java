@@ -1,21 +1,27 @@
 package Crawler;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
 import datamodel.DynastyEntity;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import constant.Constant;
+
 public class Dynasty extends AbstractCrawler {
 
     @Override
     public void start() throws Exception {
-        int MAX_PAGE = 1000;
+        int MAX_PAGE = 160;
         int STEP_PAGE = 5;
         LinkedList<Object> crawler = new LinkedList<>();
         String ROOT_URL = "https://nguoikesu.com";
@@ -29,14 +35,22 @@ public class Dynasty extends AbstractCrawler {
                     sup.remove();
                 Elements eles = doc.select("div.blog-items").select("h2").select("a[href^=/dong-lich-su/]");
                 for (org.jsoup.nodes.Element ele : eles) {
-                    //Entity Element define here
+                    // Entity Element define here
                     String eName = ele.text();
                     HashMap<String, String> addInfo = new HashMap<String, String>();
 
                     String infoUrl = ROOT_URL + ele.attr("href");
                     Document infoDoc = Jsoup.connect(infoUrl).timeout(5000).get();
 
-                    Elements infoEles = infoDoc.select("div.item-page").select("h3");
+                    String cssSelector = "#content > div.com-content-category-blog.blog > div.category-desc.clearfix";
+                    Element element = doc.selectFirst(cssSelector);
+                    if (element != null) {
+                        String key = element.text();
+                        // Gán key vào addInfo tại đây
+                        addInfo.put(key, "");
+                    } else {
+                        System.out.println("Không tìm thấy phần tử phù hợp.");
+                    }
 
                     Element content = infoDoc.selectFirst("div.com-content-article__body");
 
@@ -48,9 +62,9 @@ public class Dynasty extends AbstractCrawler {
                     for (Element child : childs) {
                         String type = child.tagName();
                         switch (type) {
-                                case "figure":
+                            case "figure":
                             case "table":
-                               
+
                                 if (child.hasClass("cquote")) {
                                     break;
                                 }
@@ -59,7 +73,7 @@ public class Dynasty extends AbstractCrawler {
                                 break;
                         }
                     }
-                    
+
                     for (Element child : notValidTags) {
                         child.remove();
                     }
@@ -82,7 +96,7 @@ public class Dynasty extends AbstractCrawler {
                             case "p":
                                 description.append(whitespace).append(child.text()).append("\n\n");
                             case "table":
-                                if (child.hasClass("cquote")) {
+                            if (child.hasClass("cquote")) {
                                     description.append(whitespace).append(whitespace).append(child.text()).append("\n\n");
                                 }
                                 break;
@@ -91,7 +105,7 @@ public class Dynasty extends AbstractCrawler {
                                 if (i2 == nChilds - 1 || childs.get(i2 + 1).tagName() == "h2")
                                     break;
                                 index_h2++;
-                                
+
                                 description.append(index_h2).append(".").append(" ").append(child.text()).append("\n\n");
                                 index_h3 = 1;
                                 break;
@@ -110,22 +124,50 @@ public class Dynasty extends AbstractCrawler {
                                 break;
                         }
                     }
-                    crawler.add(new DynastyEntity(eName, addInfo, description.toString(), ROOT_URL));
-                    System.out.println("Crawl completed successfully!"+ eName+description );
-                    //System.out.println(crawled);
+                    DynastyEntity dynasty = new DynastyEntity(eName, addInfo, description.toString(), ROOT_URL);
+                    dynasty.setId(generateRandomId());
+                    crawler.add(dynasty);
+                    System.out.println("Crawl completed successfully!" + eName );
+                    // System.out.println(crawled);
                 }
             } catch (Exception e) {
                 // TODO: handle exception
                 System.out.println(e);
             }
+        }
 
+        JSONArray jsonArray = new JSONArray();
+        for (Object object : crawler) {
+            DynastyEntity dynasty = (DynastyEntity) object;
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("ID", dynasty.getId());
+            jsonObject.put("Type", dynasty.getType());
+            jsonObject.put("Name", dynasty.getName());
+            jsonObject.put("AdditionalInfo", dynasty.getAdditionalInfo());
+            jsonObject.put("Description", dynasty.getDescription());
+            jsonObject.put("RootURL", dynasty.getRootURL());
+            jsonObject.put("Related object", dynasty.getRelatedEntityIds());
+            jsonArray.add(jsonObject);
+        }
+
+        // Write the JSON data to a file
+        try (FileWriter fileWriter = new FileWriter(Constant.JSON_PATH)) {
+            fileWriter.write(jsonArray.toJSONString());
+            System.out.println("Crawled data written to JSON file: " + Constant.JSON_PATH);
+        } catch (IOException e) {
+            System.out.println("Error writing JSON file: " + e.getMessage());
         }
     }
 
-    public static void main(String[] args) {
-        Dynasty dynasty = new Dynasty();
+    private String generateRandomId() {
+        return java.util.UUID.randomUUID().toString();
+    }
+
+    // test
+    public static void main(String[] args) throws Exception {
+        Dynasty crawler = new Dynasty();
         try {
-            dynasty.start();
+            crawler.start();
         } catch (Exception e) {
             e.printStackTrace();
         }

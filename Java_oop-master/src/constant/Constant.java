@@ -12,12 +12,10 @@ public class Constant {
 	public final static String EVENT_ENTITY = "EventEntity";
 	public final static String FESTIVAL_ENTITY = "FestivalEntity";
 	public final static String RELIC_ENTITY = "RelicPlaceEntity";
-	public final static String UNDEFINED_ENTITY = "UndefinedEntity";
+	
 //	Entity properties
 	public final static String ENTITY_ID = "Id";
 	public final static String ENTITY_NAME = "Name";
-	public final static String ENTITY_BORN ="Born";
-	public final static String ENTITY_DEATH ="Death";
 	public final static String ENTITY_DESCRIPTION = "Description";
 	public final static String ENTITY_ADDITIONAL_INFO = "AdditionalInfo";
 	public final static String ENTITY_RELATED_ENTITY_IDS = "RelatedEntityIds";

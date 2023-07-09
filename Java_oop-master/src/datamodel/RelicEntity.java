@@ -4,7 +4,7 @@ import java.util.Map;
 
 import constant.Constant;
 
-public class RelicEntity extends baseEntity {
+public class RelicEntity extends BaseEntity {
 
 	public RelicEntity() {
 		super();

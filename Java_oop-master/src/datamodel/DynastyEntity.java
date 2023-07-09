@@ -4,7 +4,7 @@ import java.util.Map;
 
 import constant.Constant;
 
-public class DynastyEntity extends baseEntity{
+public class DynastyEntity extends BaseEntity{
 
 	public DynastyEntity() {
 		super();
@@ -19,12 +19,12 @@ public class DynastyEntity extends baseEntity{
 		setRootURL(url);
 	}
 	public String getType() {
-		return Constant.FESTIVAL_ENTITY;
+		return Constant.DYNASTY_ENTITY;
 	}
 
 	@Override
 	public String toString() {
-		return "FestivalEntity [id=" + id + ", name=" + name + ", description=" + description + ", additionalInfo="
+		return "DynastyEntity [id=" + id + ", name=" + name + ", description=" + description + ", additionalInfo="
 				+ additionalInfo + ", relatedEntityIds=" + relatedEntityIds + ", rootURL=" + rootURL + "]";
 	}
 }

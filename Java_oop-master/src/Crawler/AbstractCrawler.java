@@ -1,11 +1,11 @@
 package Crawler;
 import java.util.List;
 
-import datamodel.baseEntity;
+import datamodel.BaseEntity;
 public abstract class AbstractCrawler {
 	public abstract void start() throws Exception;
-	public List<baseEntity> dataCrawler;
-	public List<baseEntity> getCrawledData(){
-		return this.dataCrawler;
+	public List<BaseEntity> crawler;
+	public List<BaseEntity> getCrawledData(){
+		return this.crawler;
 	};
 }

@@ -1,15 +1,22 @@
 package Crawler;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
 import datamodel.CharacterEntity;
+import datamodel.DynastyEntity;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import constant.Constant;
 
 public class Character extends AbstractCrawler {
 
@@ -28,9 +35,10 @@ public class Character extends AbstractCrawler {
                 for (Element sup : doc.select("sup"))
                     sup.remove();
                 Elements eles = doc.select("div.blog-items").select("h2").select("a[href^=/nhan-vat/]");
+                Elements related=doc.select("div.com-content-article__body").select("i").select("annotation");
                 for (org.jsoup.nodes.Element ele : eles) {
                     //Entity Element define here
-                    String eName = ele.text();
+                    String name = ele.text();
                     HashMap<String, String> addInfo = new HashMap<String, String>();
 
                     String infoUrl = ROOT_URL + ele.attr("href");
@@ -83,7 +91,6 @@ public class Character extends AbstractCrawler {
                     int index_h2 = 0;
                     int index_h3 = 1;
 
-                    // Thêm các nội dung có thể thực sự trình bày
                     childs = content.children();
                     int nChilds = childs.size();
                     for (int i2 = 0; i2 < nChilds; i2++) {
@@ -128,8 +135,10 @@ public class Character extends AbstractCrawler {
                         }
                     }
 
-                    crawler.add(new CharacterEntity(eName, addInfo, description.toString(), ROOT_URL));
-                    System.out.println("Crawl completed successfully!"+ eName +addInfo );
+                    CharacterEntity character = new CharacterEntity(name, addInfo, description.toString(), ROOT_URL);
+                    character.setId(generateRandomId());
+                    crawler.add(new CharacterEntity(name, addInfo, description.toString(), ROOT_URL));
+                    System.out.println("Crawl completed successfully!"+ name +addInfo+related );
                   
                 }
             } catch (Exception e) {
@@ -139,14 +148,38 @@ public class Character extends AbstractCrawler {
 
         }
 
+    JSONArray jsonArray = new JSONArray();
+    for (Object object : crawler) {
+        CharacterEntity character = (CharacterEntity) object;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("Type", character.getType());
+        jsonObject.put("ID", character.getId());
+        jsonObject.put("Name", character.getName());
+        jsonObject.put("AdditionalInfo", character.getAdditionalInfo());
+        jsonObject.put("Description", character.getDescription());
+        jsonObject.put("RootURL", character.getRootURL());
+        jsonObject.put("Related object", character.getRelatedEntityIds());
+        jsonArray.add(jsonObject);
     }
 
-    public static void main(String[] args) {
-        Character character = new Character();
-        try {
-            character.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    // Write the JSON data to a file
+    try (FileWriter fileWriter = new FileWriter(Constant.JSON_PATH)) {
+        fileWriter.write(jsonArray.toJSONString());
+        System.out.println("Crawled data written to JSON file: " + Constant.JSON_PATH);
+    } catch (IOException e) {
+        System.out.println("Error writing JSON file: " + e.getMessage());
     }
+} private String generateRandomId() {
+    return java.util.UUID.randomUUID().toString();
+}
+
+// test
+public static void main(String[] args) throws Exception {
+    Character crawler = new Character();
+    try {
+        crawler.start();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
 }

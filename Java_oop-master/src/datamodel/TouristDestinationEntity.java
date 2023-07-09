@@ -2,7 +2,7 @@ package datamodel;
 
 import constant.Constant;
 
-public class TouristDestinationEntity extends baseEntity{
+public class TouristDestinationEntity extends BaseEntity{
 
 	public TouristDestinationEntity() {
 		super();
