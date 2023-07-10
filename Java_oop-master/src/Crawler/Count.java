@@ -1,4 +1,4 @@
-package Crawler;
+package VD;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -11,11 +11,16 @@ import java.io.IOException;
 public class Count {
     public static void main(String[] args) {
         try {
-            FileReader fileReader = new FileReader("D:\\Eclipse\\Java_oop-master\\json\\datanew.json");
+            FileReader fileReader = new FileReader("C:\\Users\\84975\\Downloads\\datanew.json");
             JSONParser jsonParser = new JSONParser();
             JSONArray jsonArray = (JSONArray) jsonParser.parse(fileReader);
             fileReader.close();
 
+            int character=0;
+            int dynasty=0;
+            int relic=0;
+            int festival=0;
+            
             int characterCountWiki = 0;
             int dynastyCountWiki = 0;
             int relicPlaceCountWiki = 0;
@@ -86,7 +91,16 @@ int totalCount=(linkCountWiki+linkCountNguoiKeSu)/2;
             countsObject.put("FestivalEntity_NguoiKeSu", festivalCountNguoiKeSu);
             countsObject.put("Total Links", totalCount);
 
-            FileWriter fileWriter = new FileWriter("D:\\Eclipse\\Java_oop-master\\json\\counts.json");
+            character=characterCountWiki+characterCountNguoiKeSu;
+            dynasty=dynastyCountWiki+dynastyCountNguoiKeSu;
+            relic =relicPlaceCountWiki+relicPlaceCountNguoiKeSu;
+            festival=festivalCountWiki+festivalCountNguoiKeSu;
+            countsObject.put ("Total character:",character);
+            countsObject.put ("Total Dynasty and Event:",dynasty);
+            countsObject.put ("Total Relic :",relic);
+            countsObject.put ("Total Festival:",festival);
+
+            FileWriter fileWriter = new FileWriter("C:\\Users\\84975\\Downloads\\count.json");
             fileWriter.write(countsObject.toJSONString());
             fileWriter.close();
 
