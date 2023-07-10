@@ -16,6 +16,11 @@ public class Count {
             JSONArray jsonArray = (JSONArray) jsonParser.parse(fileReader);
             fileReader.close();
 
+            int character=0;
+            int dynasty=0;
+            int relic=0;
+            int festival=0;
+            
             int characterCountWiki = 0;
             int dynastyCountWiki = 0;
             int relicPlaceCountWiki = 0;
@@ -85,6 +90,11 @@ int totalCount=(linkCountWiki+linkCountNguoiKeSu)/2;
             countsObject.put("RelicPlaceEntity_NguoiKeSu", relicPlaceCountNguoiKeSu);
             countsObject.put("FestivalEntity_NguoiKeSu", festivalCountNguoiKeSu);
             countsObject.put("Total Links", totalCount);
+
+            countsObject.put ("Total character:",character);
+            countsObject.put ("Total Dynasty and Event:",dynasty);
+            countsObject.put ("Total Relic :",relic);
+            countsObject.put ("Total Festival:",festival);
 
             FileWriter fileWriter = new FileWriter("D:\\Eclipse\\Java_oop-master\\json\\counts.json");
             fileWriter.write(countsObject.toJSONString());
