@@ -58,25 +58,6 @@ public class BaseEntity {
 			this.relatedEntityIds.add(entityId);
 	}
 	
-	public void processRelatedEntities(List<BaseEntity> entities) {
-		for (BaseEntity entity : entities) {
-			if (!entity.getId().equals(this.getId())) {
-				if (isContainInEntity(entity.getName()) || isContainInEntity(entity.getDescription())) {
-					addRelatedEntity(entity.getId());
-					entity.addRelatedEntity(this.getId());
-				} else {
-					for (String value : entity.getAdditionalInfo().values()) {
-						if (isContainInEntity(value)) {
-							addRelatedEntity(entity.getId());
-							entity.addRelatedEntity(this.getId());
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-	
 	//getter and setter
 	public String getId() {
 		return id;

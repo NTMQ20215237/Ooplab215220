@@ -73,9 +73,6 @@ public class JSonMerge {
         JSONArray sourceRelated = (JSONArray) sourceEntity.get(Constant.ENTITY_RELATED_ENTITY_IDS);
         JSONArray targetRelated = (JSONArray) targetEntity.get(Constant.ENTITY_RELATED_ENTITY_IDS);
         if (sourceRelated != null) {
-            // Thực hiện các thao tác trên sourceRelated
-            // ...
-        
 
         for (Object relatedObj : sourceRelated) {
             String relatedId = (String) relatedObj;
@@ -101,12 +98,11 @@ public class JSonMerge {
 
     public static void main(String[] args) {
         String outputPath = Constant.JSON_PATH;
-        String inputPath1 = "D:\\Eclipse\\Java_oop-master\\json\\CharacterNKS.json";
-        String inputPath2 = "D:\\Eclipse\\Java_oop-master\\json\\CharacterWiki.json";
-        String inputPath3 = "D:\\Eclipse\\Java_oop-master\\json\\DynastyNKSVer1.json";
-        String inputPath4 = "D:\\Eclipse\\Java_oop-master\\json\\DynastyWiki.json";
+        String inputPath1 = "D:\\Eclipse\\Java_oop-master\\json\\Dat.json";
+        String inputPath2 = "D:\\Eclipse\\Java_oop-master\\json\\Datamerge.json";
+        
 
 
-        mergeJSONFiles(outputPath, inputPath1, inputPath2, inputPath3, inputPath4);
+        mergeJSONFiles(outputPath, inputPath1, inputPath2);
     }
 }
